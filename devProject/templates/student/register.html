@@ -1,11 +1,156 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Register..</title>
+
+    <!-- Font Icon -->
+    <link rel="stylesheet" href="{% static 'fonts/material-icon/css/material-design-iconic-font.min.css'%}">
+
+    <!-- Main css -->
+    <link rel="stylesheet" href="{% static 'css/register.css'%}">
+
+    <!--JS-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
-    
-</body>
+
+    <div class="main">
+
+        <!-- Sign up form -->
+        <section class="signup">
+            <div class="container">
+                <div class="signup-content">
+                    <div class="signup-form">
+                        <h2 class="form-title">Register..</h2>
+                        
+                             
+                            <div class="form-group">
+                                <label for="first_name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input type="text" name="first_name" id="first_name" placeholder="Your Frist Name"/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="last_name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input type="text" name="last_name" id="last_name" placeholder="Your Last Name"/>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="roll_number"><i class="zmdi zmdi-book"></i></label>
+                                <input type="number" name="roll_number" id="roll_number" placeholder="Your Roll Number"/>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="mobile-number"><i class="zmdi zmdi-phone"></i></label>
+                                <input type="number" name="mobile" id="mobile" placeholder="Your Mobile Number"/>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label for="email"><i class="zmdi zmdi-email"></i></label>
+                                <input type="email" name="email" id="email" placeholder="Your Email"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="username"><i class="zmdi zmdi-account-circle material-icons-name"></i></label>
+                                <input type="username" name="username" id="username" placeholder="Your Username"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="password"><i class="zmdi zmdi-lock"></i></label>
+                                <input type="password" name="password" id="password" placeholder="Password"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
+                                <input type="password" name="re_pass" id="re_pass" placeholder="Repeat your password"/>
+                            </div>
+                            
+                            <div class="form-group form-button">
+                                <button class="btn" onclick="SubmitButton()" >Register</button>
+                            </div>
+                        
+                    </div>
+                    <div class="signup-image">
+                        <figure><img src="{% static 'img/signup-image.jpg'%}" alt="sing up image"></figure>
+                        <a href="/" class="signup-image-link">I am already member</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sing in  Form -->
+        
+
+    </div>
+    <div id="snackbar">Warning</div> 
+    <!-- JS -->
+    <script >
+        function SubmitButton(){
+            var first_name = document.getElementById('first_name').value;
+            var last_name = document.getElementById('last_name').value;
+            var email = document.getElementById('email').value;
+            var mobile = document.getElementById('mobile').value;
+            var roll_number = document.getElementById('roll_number').value;
+            var username = document.getElementById('username').value;
+            var password  = document.getElementById('password').value;
+        
+            var data = {
+                'username' : username,
+                'first_name' : first_name, 
+                'last_name' : last_name,
+                'email' : email,
+                'mobile' : mobile , 
+                'roll_number' : roll_number , 
+                'password'  : password
+            }
+        
+        
+            console.log(data)
+        
+        
+        
+        
+            var xhttp = new XMLHttpRequest();
+                        xhttp.onreadystatechange = function() {
+                            if (this.readyState == 4 && this.status == 200) {
+                                //document.getElementById("loader").style.visibility = 'hidden';
+                                console.log(this.responseText);
+                                var response = JSON.parse(this.responseText);
+                                    if(response['status'] == 'warning'){
+                                        console.log("query time: " + response['query_time']);
+                                        var x = document.getElementById("snackbar");
+                                        x.innerHTML = response['message'];
+                                        x.style.backgroundColor = "red";    
+                                        x.className = "show";
+                                        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+                                    }
+                                    else if(response['status'] == 'success'){
+                                        console.log("query time: " + response['query_time']);
+                                        var x = document.getElementById("snackbar");
+                                        x.innerHTML = response['message'];
+                                        x.style.backgroundColor = "green";    
+                                        x.className = "show";
+                                        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+                                        window.location.replace(response['url']);
+        
+                                    }else {
+                                        console.log(response['console']);
+                                        var x = document.getElementById("snackbar");
+                                        x.innerHTML = response['message'];
+                                        x.style.backgroundColor = "red";    
+                                        x.className = "show";
+                                        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+                                        
+                                    }
+                            }
+                        };
+                        xhttp.open("POST", "register", true);
+                        xhttp.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+                    xhttp.send(JSON.stringify(data));
+        
+        }
+    </script>
+    <!-- <script src=" {% static 'js/register.js' %}"></script> -->
+</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
 </html>

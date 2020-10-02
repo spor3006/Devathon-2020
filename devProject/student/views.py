@@ -13,34 +13,71 @@ import firestoreInitApp
 import sys
 # Create your views here.
 def Register(request):
-    if request == "POST":
-        roll_number = request.POST['roll_no']
-        fname= request.POST['first_name']
-        lname = request.POST['last_name']
-        email = request.POST['email']
-        username = request.POST['username']
-        password = request.POST['password']
+    print(request.method)
+    if request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))
+        print(data)
+        roll_number = data['roll_number']
+        fname= data['first_name']
+        lname = data['last_name']
+        email = data['email']
+        username = data['username']
+        password = data['password']
+        mobile_no = data['mobile']
 
         student_info ={}
 
         student_info['roll_number'] = roll_number
-        student_info['fname']=fname
-        student_info['lname'] = lname
+        student_info['first_name']=fname
+        student_info['last_name'] = lname
         student_info['email'] = email
         student_info['username'] = username
         student_info['password'] = password
-
+        student_info['mobile_no'] = mobile_no
         student_info['transaction_info'] ={}
         student_info['curr_bill'] = 0
         try:
+            start_time = time.time()
             db = firestore.client()
 
             doc = db.collection('Student').document()
-            student_info['id'] = doc.id
-            doc.set(student_info)
 
+            student_info['id'] = doc.id
+            existing = db.collection('Student').where("roll_number",'==',roll_number).stream()
+            check = len(list(existing))
+
+            if check > 0 :
+                response = {
+                    'status' : 'warning',
+                    'message' : 'user already registered',
+                    'url'  : '/student/register'
+                }
+                response = json.dumps(response)
+                return HttpResponse(response)
+
+            else:
+
+                doc.set(student_info)
+                query_time = time.time() - start_time
+                response = {
+                    'status' : 'success',
+                    'message' : 'Registered Successfully',
+                    'url'  : '/student/',
+                    'query_time' : query_time
+                }
+                response = json.dumps(response)
+                return HttpResponse(response)
         except: 
-            print("Failed to Reach Database")
+            response = {
+                'status' : 'warning',
+                'message' : 'Not able to reach DB',
+                'url'  : '/student/'
+            }
+            response = json.dumps(response)
+            return HttpResponse(response)
+
+    if request.method == "GET":
+        return render(request , 'student/register.html')
 
 def Login(request):
     if request.method == 'POST' :
@@ -88,7 +125,7 @@ def Login(request):
         except:
             return HttpResponse("Unable to Fetch Data")
     if request.method == "GET" :
-        return redirect('/login')
+        return render(request ,  'student/login.html')
 
 def index(request):
         return render(request , 'student/dashboard.html')
@@ -120,4 +157,5 @@ def getStudentData(request,roll_no):
         
     except: 
         print("errors")
+
 

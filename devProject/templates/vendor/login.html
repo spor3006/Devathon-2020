@@ -7,54 +7,52 @@
 	<link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
 	<script src="https://kit.fontawesome.com/a81368914c.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	
+
 </head>
 <body>
 	<img class="wave" src="{% static 'img/wave.png' %}">
 	<div class="container">
-		
+
 		<div class="img">
 			<img src="{% static 'img/bg.svg'%}">
 			<h3 class="head_line"></h3>
 		</div>
 		<div class="login-content">
 			<div id="form">
-				
+
 				<img src="{% static 'img/wsdc_logo.png'%}">
-				<h2 class="title">Welcome</h2>
+				<h2 class="title">Vender Login</h2>
            		<div class="input-div one">
            		   <div class="i">
            		   		<i class="fas fa-user"></i>
            		   </div>
            		   <div class="div">
-           		   		
-           		   		<input type="text" class="input" id='username' name="username" required>
+         <!--  		   		<h5>Username</h5>  -->
+           		   		<input type="text" class="input" id='username' placeholder="username" name="username" required>
            		   </div>
            		</div>
            		<div class="input-div pass">
-           		   <div class="i"> 
+           		   <div class="i">
            		    	<i class="fas fa-lock"></i>
            		   </div>
            		   <div class="div">
            		    	
-           		    	<input type="password" class="input" id="password" name="password" required>
+           		    	<input type="password" class="input" id="password" placeholder="password" name="password" required>
             	   </div>
             	</div>
-            	<a class = "mid" href="/forgotPassword">Forgot Password?</a> 
+            	{% comment %} <a class = "mid" href="/forgotPassword">Forgot Password?</a> {% endcomment %}
 				<!-- <input type="submit"  class="btn" value="Login"> -->
 				<button class="btn" onclick="SubmitButton()" >Login</button>
-				<div class="mid">
-					<h4>New Here <a href="/register" style="color:#00ff95; text-align : center">Sign Up</a> Just in few moments</h4>
-				</div>
+				
             </div>
-			
+
         </div>
-		
-		
+
+
 	</div>
-	
+
 	<!--  ######### Popbox for error message #############3-->
-    <div id="snackbar">Warning</div> 
+    <div id="snackbar">Warning</div>
 	<script type="text/javascript" src="{% static 'js/main.js'%}"></script>
 	<script>
 		function SubmitButton(){
@@ -71,12 +69,12 @@
 				   console.log(data['message']);
 			   var x = document.getElementById("snackbar");
 				x.innerHTML = data['message'];
-				x.style.backgroundColor = "red";    
+				x.style.backgroundColor = "red";
 				x.className = "show";
 				setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
 
 			   }
-			   
+
                 }
             };
             xhttp.open("POST", "", true);

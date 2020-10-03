@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
-
+import http.client
 import json
 import datetime
 import time
@@ -16,7 +16,8 @@ import sys
 def viewDashBoard(request):
     return render(request , 'vendor/dashboard.html')
 
-
+def Login(request):
+    return render(request , 'vendor/login.html')
 
 
 def updateStudentBill(request):
@@ -24,8 +25,9 @@ def updateStudentBill(request):
         try :
             start_time = time.time()
             posted_data =json.loads(request.body.decode('utf-8'))
-            #print(posted_data)
-            roll_no = 123
+            print(posted_data)
+            roll_no = posted_data['roll_number']
+            
             items = posted_data['Items']
            
             quantity = posted_data['quantity']
@@ -58,6 +60,10 @@ def updateStudentBill(request):
             print(total)
             
 
+
+           
+            
+
             db = firestore.client()
             stu_doc = db.collection('Student').where('roll_number','==',str(roll_no)).stream()
             data ={}
@@ -73,10 +79,18 @@ def updateStudentBill(request):
             transactions[str(current_time)] = total 
             data['transaction_info'] = transactions
 
+            #mobNum = data['mobile_no']
+            ####SEND SMS########
+            #conn = http.client.HTTPConnection("2factor.in")
+            #payload = text
+            #headers = { 'content-type': "application/x-www-form-urlencoded" }
+            #conn.request("GET", "/API/V1/416d4528-a81f-11ea-9fa5-0200cd936042/SMS/"+str(mobNum)+"/" +text, payload, headers)
+            #es = conn.getresponse()
+            #print("SMS response ",res.status )
 
             db.collection('Student').document(data['id']).set(data)
 
-
+            data['text'] = text
             query_time =  (time.time() - start_time)
             result = {
                 'data': data,

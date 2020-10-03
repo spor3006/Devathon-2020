@@ -203,8 +203,8 @@
                    
                         <div class = "container-fluid ml-3 mt-5">
                             
-                            <h1 >Hi there : ) {{user_id}}</h1><br>
-                            <h1 id = "roll_no">{{user_id}}</h1>
+                            <h1 >Hi there : )</h1><br>
+                           
                             
                             <div class="row ml-3">
                                 <div class="row">
@@ -226,7 +226,10 @@
                                         <button id="addRow" type="button" class="btn btn-info mt-4">Add Row</button><br>
                                         <button class="col-md-12 btn btn-primary mt-4"  onclick="SubmitButton()" type="submit">Create a Project</button>
                                 </div>
-                                
+                                <div id = "roll_id">
+                                   
+                                </div>
+                                <label id ="Roll_id_label"></label>
                                  <div id="reader">HI </div> 
                                 <input type="file" id="qr-input-file" accept="image/*">
                                 <!-- 
@@ -270,7 +273,8 @@
                                             var roll_no = qrCodeMessage
                                             //console.log(qrCodeMessage)
 
-
+                                            //roll_html = '<label for="Roll_No" id ="Roll_id_label">'+roll_no+'</label>'
+                                            $('#Roll_id_label').append(roll_no)
 
                                             
 
@@ -435,10 +439,10 @@
                 quantity.push($(this).val());
 
             });
-
+            var roll_number = $("#Roll_id_label").text()
             console.log(items)
             console.log(quantity)
-            console.log(roll_no)
+            console.log(roll_number)
 
                                             var xhttp = new XMLHttpRequest();
                                                 xhttp.onreadystatechange =  function(){
@@ -447,8 +451,9 @@
 
                                                         if(response['status']=='success'){
                                                             console.log("Success");
-                                                            
+                                                            console.log(response['data']['text'])
                                                             addOption()
+                                                            $("#Roll_id_label").empty();
                                                         }
                                                         else{
                                                             console.log("Failed");
@@ -458,7 +463,7 @@
                                                 
                                                 
                                                 req_data = {
-                                                    'roll_number' : roll_no,
+                                                    'roll_number' : roll_number,
                                                     'Selected Price'  : selected_price,
                                                     'Items' : items_selected,
                                                     'quantity' : quantity,

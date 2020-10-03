@@ -102,9 +102,10 @@ def Login(request):
                     print(my_dict)
                     passW = my_dict['password']
                     student_id = my_dict['id']
+                    roll_id = my_dict['roll_number']
                     if(password==passW):
                         #print("here2")
-                        response = {'status': 'success','url': 'student/dashboard/'+student_id,}
+                        response = {'status': 'success','url': 'dashboard/'+roll_id,}
                         #print(response)
                         #print("This")
                         response = json.dumps(response)

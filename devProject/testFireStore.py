@@ -26,4 +26,27 @@ def testRun():
     except :
         print("Its Ok! You have to face Errors")
 
-testRun()
+#estRun()
+
+
+def setMess():
+    try :
+        db = firestore.client()
+        coll = db.collection('Mess_1')
+
+        days = ['Monday' , 'Tuesday' , 'Wednesday ' , 'Thursday' , 'Friday']
+        meals = ['Breakfast' , 'Lunch' , 'Snacks'  , 'Dinner']
+
+        for day in days:
+            for meal in meals:
+                doc_name = day+"_"+meal
+                doc = coll.document(doc_name)
+                data={}
+                doc.set(data)
+                print(doc_name)
+
+    except:
+        print("Could not reach the database")
+
+
+setMess()

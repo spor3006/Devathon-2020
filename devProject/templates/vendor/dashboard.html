@@ -172,7 +172,32 @@
 
                 <div class="app-main__outer">
 
-                    
+                    <div class = "Initial">
+                        <div class = row>
+                            <div class="col-sm-4">
+                                <select id="day" name="day" class="form-control" >
+                                    <option value="">Select the Day</option>
+                                    <option value="Monday">Monday</option>
+                                    <option value="Tuesday">Tuesday</option>
+                                    <option value="Wednesday">Wednesday</option>
+                                    <option value="Thursday">Thursday</option>
+                                    <option value="Friday">Friday</option>
+                                </select>
+                            </div>
+
+                            <div class="col-sm-4">
+                                <select id="meal_type" name="meal_type" class="form-control" >
+                                    <option value="">Select the meal</option>
+                                    <option value="Breakfast">Breakfast</option>
+                                    <option value="Lunch">Lunch</option>
+                                    <option value="Lunch">Snacks</option>
+                                    <option value="Dinner">Dinner</option>
+                                </select>
+                            </div>
+
+
+                        </div>
+                    </div>
                                 
                             
                    
@@ -180,13 +205,39 @@
                             
                             <h1 >Hi there : ) {{user_id}}</h1><br>
                             <h1 id = "roll_no">{{user_id}}</h1>
-                            <h3>Some Info about WorkerHub(Welcome to WorkerHub) Manage your Workers just within short time</h3><br>
+                            
                             <div class="row ml-3">
-                                <h5>Let's get started by creating your first brand new project</h5>
-                                <button type = "button" class ="btn btn-primary ml-3"onclick="window.location.href='/company/createproject'">Create New Project</button>
+                                <div class="row">
+                            <div class="col-sm-4">Food Item</div>
+                            <div class="col-sm-4">Qauntity</div>
+                            
+                            <button id="getDetails" type="button"  onclick="getDetails()" class="btn btn-info mt-4">Get Details</button><br>
+                        </div>
+                       
+                            <div class="row" id="inputFormRow">
+
+                                {% comment %} <div class="col-sm-4">
+                                                <select id="typeOfItem" name="typeOfLabour" class="form-control" >
+                                                    <option value="">Type of Worker</option>
+                                                    <option value="Labour">Labour</option>
+                                                    <option value="Mistry">Mistry</option>
+                                                    <option value="Carpenter">Carpenter</option>
+                                                </select>
+                                </div> {% endcomment %}
+                                <div class="col-sm-4"><input type="number" class="form-control" name="noOfLabour" placeholder="Number of worker"></div>
+                                                                        
+                                            
+                                </div>
+                                        
+                                    
+                                <div id="newRow"></div>
+
+                                    
+                                    <button id="addRow" type="button" class="btn btn-info mt-4">Add Row</button><br>
+                                    <button class="col-md-12 btn btn-primary mt-4"  onclick="SubmitButton()" type="submit">Create a Project</button>
                             </div>
                             
-                            <div id="reader">HI </div>
+                            {% comment %} <div id="reader">HI </div> {% endcomment %}
                             <input type="file" id="qr-input-file" accept="image/*">
                             <!-- 
                             Or add captured if you only want to enable smartphone camera, PC browsers will ignore it.
@@ -224,30 +275,7 @@
 
 
 
-                                            var xhttp = new XMLHttpRequest();
-                                                xhttp.onreadystatechange =  function(){
-                                                    if(this.readyState == 4 && this.status == 200){
-                                                        var response = JSON.parse(this.responseText);
-
-                                                        if(response['status']=='success'){
-                                                            console.log("Success");
-                                                        }
-                                                        else{
-                                                            console.log("Failed");
-                                                        }
-                                                    }
-                                                };
-                                                net_amt =0
-                                                items = {}
-                                                req_data = {
-                                                    'roll_number' : roll_no,
-                                                    'Net Amount' : net_amt,
-                                                    'Items' : items
-                                                }
-
-                                                xhttp.open("POST", "updateStudentBill", true);
-                                                xhttp.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
-                                                xhttp.send(JSON.stringify(req_data));
+                                            
 
                                             
                                             
@@ -277,8 +305,72 @@
 
                                 
                             </script>
+
+                            <script type ="text/javascript">
+                                function getDetails(){
+                                    var day = $('#day').find(':selected').text()
+                                    var meal_type = $('#meal_type').find(':selected').text()
+
+                                    console.log(day)
+                                    console.log(meal_type)
+
+                                    mess = 'Mess_1' 
+
+                                    foodItemData ={
+                                        'day' : day,
+                                        'meal_type' : meal_type,
+                                        'mess' : mess
+                                    }
+
+
+                                    var xhttp = new XMLHttpRequest();
+                                                xhttp.onreadystatechange =  function(){
+                                                    if(this.readyState == 4 && this.status == 200){
+                                                        var response = JSON.parse(this.responseText);
+
+                                                        if(response['status']=='success'){
+                                                            console.log("Success");
+                                                        }
+                                                        else{
+                                                            console.log("Failed");
+                                                        }
+                                                    }
+                                                };
+                                                
+
+                                                
+                                                xhttp.open("POST", "getFoodDetails", true);
+                                                xhttp.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+                                                xhttp.send(JSON.stringify(foodItemData));
+                                }
+                            </script>
+
                              <script type = "text/javascript">
 
+                            $("#addRow").click(function () {
+                                var html = '';
+                                html += '<div class="row foodItems" id="inputFormRow"><div class="col-sm-4"><select id="foodItemtype" name="foodItemType" class="form-control" ><option value="">Food Item</option>';
+                                var food_items = ["Egg " , "Chicken"]
+                                var i =0;
+                                for(i=0 ;i<food_items.length;i++){
+                                    html+='<option value="'+food_items[i]+'">'+food_items[i]+'</option>';
+                                }
+                                html+="</select></div>";
+                                html += '<div class="col-sm-4"><input type="number" class="form-control" name="quantity" placeholder="Number of worker"></div>';
+
+                                html += '<i class="fas fa-minus-circle" id="removeRow"></i>';
+                                html += '</div>';
+
+                                $('#newRow').append(html);
+                            });
+
+
+
+
+                            // remove row
+                            $(document).on('click', '#removeRow', function () {
+                                $(this).closest('#inputFormRow').remove();
+                            });
 
                                
                             </script>
@@ -308,7 +400,51 @@
 
       
 <script type = "text/javascript">
-   
+
+        function SubmitButton(){
+            console.log("Clicked ME:")
+            var items = []
+            var quantity= []
+            $(".foodItems").each(function() {
+                items.push($(this).find(":selected").text());
+            });
+
+            $("input[name='quantity']").each(function() {
+                quantity.push($(this).val());
+
+            });
+
+            console.log(items)
+            console.log(quantity)
+            console.log(roll_no)
+
+                                            var xhttp = new XMLHttpRequest();
+                                                xhttp.onreadystatechange =  function(){
+                                                    if(this.readyState == 4 && this.status == 200){
+                                                        var response = JSON.parse(this.responseText);
+
+                                                        if(response['status']=='success'){
+                                                            console.log("Success");
+                                                        }
+                                                        else{
+                                                            console.log("Failed");
+                                                        }
+                                                    }
+                                                };
+                                                
+                                                
+                                                req_data = {
+                                                    'roll_number' : roll_no,
+                                                    
+                                                    'Items' : items,
+                                                    'quantity' : quantity
+                                                }
+                                                console.log(req_data)
+                                                xhttp.open("POST", "updateStudentBill", true);
+                                                xhttp.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+                                                //xhttp.send(JSON.stringify(req_data));
+
+        }
 </script>
 
 

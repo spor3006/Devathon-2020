@@ -24,19 +24,57 @@ def updateStudentBill(request):
         try :
             start_time = time.time()
             posted_data =json.loads(request.body.decode('utf-8'))
-            print(posted_data)
-            roll_no = posted_data['roll_number']
+            #print(posted_data)
+            roll_no = 123
             items = posted_data['Items']
-            quantity = posted_data['qauntity']
+           
+            quantity = posted_data['quantity']
+            
+            price = posted_data['Selected Price']
+            
+            total =0
+
+            time1 = time.time()
+
+            current_time = datetime.datetime.now()  
+
+            print(current_time)
+
+            print(time1)
+            text =''
+            text+= "Date : ---------" + str(current_time) +"\n"
+
+            text+= "Food Item ------- Price ------- quantity    " 
+            text+='\n'
+            for i in range(0,len(items)):
+                total += int(price[i]) * int(quantity[i])
+                text += items[i] + "-------" + price[i] + "-------" + quantity[i] 
+                text+='\n'
+
+            text+="total ---------- " + str(total)
+
+
+            print(text)
+            print(total)
             
 
             db = firestore.client()
-            stu_doc = db.collection('Student').where('roll_number','==',roll_no).stream()
+            stu_doc = db.collection('Student').where('roll_number','==',str(roll_no)).stream()
             data ={}
             for doc in stu_doc:
-                data = doc.to_data()
+                data = doc.to_dict()
             
             #update the bill amounts here 
+            print(data)
+            bill = data['curr_bill']
+            bill+=total
+            data['curr_bill'] =bill
+            transactions = data['transaction_info']
+            transactions[str(current_time)] = total 
+            data['transaction_info'] = transactions
+
+
+            db.collection('Student').document(data['id']).set(data)
 
 
             query_time =  (time.time() - start_time)
@@ -46,10 +84,11 @@ def updateStudentBill(request):
                 'status' : 'success',
             }
             return HttpResponse(json.dumps(result))
-        except : 
+        except Exception as e : 
+            print(e)
             result = {
                 'status': 'failed',
-                'query_time': query_time,
+                
             }
             return HttpResponse(json.dumps(result))
 
@@ -71,8 +110,16 @@ def getFood(request ):
             my_dict = doc.to_dict()
             items = []
             price=[]
-            items = my_dict.keys()
-            price = my_dict.values()
+            
+            
+            for i in my_dict:
+                items.append(i)
+                price.append(my_dict[i])
+
+            print(items)
+            print(price)
+
+
 
             data_to_send ={
                 'items' : items , 

@@ -159,3 +159,6 @@ def getStudentData(request,roll_no):
         print("errors")
 
 
+
+def Transactions(request , user_id) :
+    return render(request ,'student/transactions.html' ,{'user_id': user_id})

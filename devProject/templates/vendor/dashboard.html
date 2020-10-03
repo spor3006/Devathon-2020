@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Content-Language" content="en">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Company Portal</title>
+    <title>Mess Portal</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <meta name="description" content="WorkerHub Company Portal with advance analytics tools to track and manage your project ">
@@ -213,37 +213,34 @@
                             
                             <button id="getDetails" type="button"  onclick="getDetails()" class="btn btn-info mt-4">Get Details</button><br>
                         </div>
-                       
-                            <div class="row" id="inputFormRow">
+                            <div id = "myDiv"> 
+                                <div class="row" id="inputFormRow">
 
-                                {% comment %} <div class="col-sm-4">
-                                                <select id="typeOfItem" name="typeOfLabour" class="form-control" >
-                                                    <option value="">Type of Worker</option>
-                                                    <option value="Labour">Labour</option>
-                                                    <option value="Mistry">Mistry</option>
-                                                    <option value="Carpenter">Carpenter</option>
-                                                </select>
-                                </div> {% endcomment %}
-                                <div class="col-sm-4"><input type="number" class="form-control" name="noOfLabour" placeholder="Number of worker"></div>
-                                                                        
-                                            
-                                </div>
+                               
+                                
                                         
                                     
-                                <div id="newRow"></div>
-
-                                    
-                                    <button id="addRow" type="button" class="btn btn-info mt-4">Add Row</button><br>
-                                    <button class="col-md-12 btn btn-primary mt-4"  onclick="SubmitButton()" type="submit">Create a Project</button>
+                                    <div id="newRow"></div>
+    
+                                        
+                                        <button id="addRow" type="button" class="btn btn-info mt-4">Add Row</button><br>
+                                        <button class="col-md-12 btn btn-primary mt-4"  onclick="SubmitButton()" type="submit">Create a Project</button>
+                                </div>
+                                
+                                 <div id="reader">HI </div> 
+                                <input type="file" id="qr-input-file" accept="image/*">
+                                <!-- 
+                                Or add captured if you only want to enable smartphone camera, PC browsers will ignore it.
+                                -->
+                                <input type="file" id="qr-input-file" accept="image/*" capture>
                             </div>
                             
-                            {% comment %} <div id="reader">HI </div> {% endcomment %}
-                            <input type="file" id="qr-input-file" accept="image/*">
-                            <!-- 
-                            Or add captured if you only want to enable smartphone camera, PC browsers will ignore it.
-                            -->
-                            <input type="file" id="qr-input-file" accept="image/*" capture>
+
+
                             <script type = "text/javascript">
+                                function addOption(){
+
+                                
                                 Html5Qrcode.getCameras().then(devices => {
                                 /**
                                 * devices would be an array of objects of type:
@@ -303,7 +300,35 @@
                                         console.log("Some Error")
                                         });
 
-                                
+
+                                        $("#addRow").click(function () {
+                                            var html = '';
+                                            html += '<div class="row foodItems" id="inputFormRow"><div class="col-sm-4"><select id="foodItemtype" name="foodItemType" class="form-control" ><option value="">Food Item</option>';
+                                            var food_items = items 
+                                            var i =0;
+                                            for(i=0 ;i<food_items.length;i++){
+                                                html+='<option value="'+food_items[i]+'">'+food_items[i]+'</option>';
+                                            }
+                                            html+="</select></div>";
+                                            html += '<div class="col-sm-4"><input type="number" class="form-control" name="quantity" placeholder="Number of worker"></div>';
+            
+                                            html += '<i class="fas fa-minus-circle" id="removeRow"></i>';
+                                            html += '</div>';
+            
+                                            $('#newRow').append(html);
+                                        });
+            
+            
+            
+            
+                                        // remove row
+                                        $(document).on('click', '#removeRow', function () {
+                                            $(this).closest('#inputFormRow').remove();
+                                        });
+
+                                       
+
+                                    }
                             </script>
 
                             <script type ="text/javascript">
@@ -330,6 +355,17 @@
 
                                                         if(response['status']=='success'){
                                                             console.log("Success");
+                                                            items = response['data']['items']
+                                                            price = response['data']['price']
+
+                                                            
+                                                            menu ={}
+                                                            for(var i =0 ;i<items.length;i++){
+                                                                menu[items[i]] = price[i]
+                                                            }
+
+                                                            console.log(menu)
+                                                            addOption()
                                                         }
                                                         else{
                                                             console.log("Failed");
@@ -342,35 +378,16 @@
                                                 xhttp.open("POST", "getFoodDetails", true);
                                                 xhttp.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
                                                 xhttp.send(JSON.stringify(foodItemData));
+
+
+
+                                                
                                 }
                             </script>
 
                              <script type = "text/javascript">
 
-                            $("#addRow").click(function () {
-                                var html = '';
-                                html += '<div class="row foodItems" id="inputFormRow"><div class="col-sm-4"><select id="foodItemtype" name="foodItemType" class="form-control" ><option value="">Food Item</option>';
-                                var food_items = ["Egg " , "Chicken"]
-                                var i =0;
-                                for(i=0 ;i<food_items.length;i++){
-                                    html+='<option value="'+food_items[i]+'">'+food_items[i]+'</option>';
-                                }
-                                html+="</select></div>";
-                                html += '<div class="col-sm-4"><input type="number" class="form-control" name="quantity" placeholder="Number of worker"></div>';
-
-                                html += '<i class="fas fa-minus-circle" id="removeRow"></i>';
-                                html += '</div>';
-
-                                $('#newRow').append(html);
-                            });
-
-
-
-
-                            // remove row
-                            $(document).on('click', '#removeRow', function () {
-                                $(this).closest('#inputFormRow').remove();
-                            });
+                            
 
                                
                             </script>
@@ -403,10 +420,15 @@
 
         function SubmitButton(){
             console.log("Clicked ME:")
-            var items = []
+            var items_selected= []
             var quantity= []
+            var selected_price = []
+        
+            
+
             $(".foodItems").each(function() {
-                items.push($(this).find(":selected").text());
+                items_selected.push($(this).find(":selected").text());
+                selected_price.push(menu[$(this).find(":selected").text()]);
             });
 
             $("input[name='quantity']").each(function() {
@@ -425,6 +447,8 @@
 
                                                         if(response['status']=='success'){
                                                             console.log("Success");
+                                                            
+                                                            addOption()
                                                         }
                                                         else{
                                                             console.log("Failed");
@@ -435,14 +459,15 @@
                                                 
                                                 req_data = {
                                                     'roll_number' : roll_no,
-                                                    
-                                                    'Items' : items,
-                                                    'quantity' : quantity
+                                                    'Selected Price'  : selected_price,
+                                                    'Items' : items_selected,
+                                                    'quantity' : quantity,
+
                                                 }
                                                 console.log(req_data)
                                                 xhttp.open("POST", "updateStudentBill", true);
                                                 xhttp.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
-                                                //xhttp.send(JSON.stringify(req_data));
+                                                xhttp.send(JSON.stringify(req_data));
 
         }
 </script>

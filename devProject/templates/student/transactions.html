@@ -7,9 +7,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Content-Language" content="en">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Company Portal</title>
+    <title>Student Portal</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <meta name="description" content="WorkerHub Company Portal with advance analytics tools to track and manage your project ">
     <meta name="msapplication-tap-highlight" content="no">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
@@ -98,7 +99,7 @@
         <div class="app-main">
                 <div class="app-sidebar sidebar-shadow">
                     <div class="app-header__logo">
-                        <div  class="brand_name">WSDC</div>
+                        <div  class="brand_name">WorkerHub</div>
                         <div class="header__pane ml-auto">
                             <div>
                                 <button type="button" class="hamburger close-sidebar-btn hamburger--elastic" data-class="closed-sidebar">
@@ -140,7 +141,7 @@
                                 </li>
                                 
                               <li>
-                                <a href="transactions/{{user_id}}">
+                                <a href="manageproject">
                                     <i class='metismenu-icon far fa-edit'></i>
                                     </i>Payment History
                                 </a>
@@ -149,7 +150,7 @@
 
                             </li>
                                 <li>
-                                    <a href="UpdateProfile">
+                                    <a href="manageproject">
                                         <i class='metismenu-icon far fa-edit'></i>
                                         </i>Update Profile
                                     </a>
@@ -182,19 +183,14 @@
                             
                             <h1 >Hi there : ) {{user_id}}</h1><br>
                             <h1 id = "roll_no">{{user_id}}</h1>
-                            <h3>Your Unique QR Code is : </h3><br>
-                            <div class="row ml-3">
+                            <h3>Your Transcations are : </h3><br>
+                            <div id ="t_table">
                                 
                             </div>
                             
                         </div>
                         
-                        <div id="qrcode"></div>
-
-                        <script type="text/javascript">
-                        var roll_no = $('#roll_no').text()
-                        new QRCode(document.getElementById("qrcode"), roll_no);
-                        </script>
+                        
                     
                     
                         
@@ -227,6 +223,20 @@
         success : function(studentData){
             var obj = JSON.parse(studentData)
             console.log(obj);
+            transactions = obj['data']['transaction_info']
+            console.log(transactions)
+            t_s = Object.keys(transactions)
+            amount = Object.values(transactions)
+            var html = "";
+            html+="<table><tr><th>Sr No.</th><th>       Time Stamp      </th><th>Amount</th></tr>"
+            for(var i = 0 ;i<t_s.length;i++){
+                html+="<tr><td>"+(i+1)+"  </td><td>"+ t_s[i] +"    </td><td>" + amount[i] + "  </td></tr>"
+            }
+
+            html+="</table>"
+
+
+            $('#t_table').append(html)
         }
     })
 </script>

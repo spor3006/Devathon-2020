@@ -1,0 +1,460 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Content-Language" content="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Company Portal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <meta name="description" content="WorkerHub Company Portal with advance analytics tools to track and manage your project ">
+    <meta name="msapplication-tap-highlight" content="no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.js"></script>
+   
+
+    
+
+<link href="{% static 'css/dashboard.css' %}" rel="stylesheet">
+<link href="{% static 'css/main_dashboard.css' %}" rel="stylesheet">
+
+
+<script type="text/javascript" src="{% static 'js/dashboard.js' %}" ></script>
+
+<script type="text/javascript" src="{% static 'js/html5-qrcode.min.js' %}" ></script>
+
+
+</head>
+<body>
+    <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
+        <div class="app-header header-shadow">
+            <div class="app-header__logo">
+                <a href="#" class="brand_name">
+                <img src="{% static 'img/wsdc_logo.png' %}" alt="Logo" style="height: 45px;
+                    width: auto;
+                    margin-left: 0px;
+                    padding-left: 0px;">
+            </a>
+                <div class="header__pane ml-auto">
+                    <div>
+                        <button type="button" class="hamburger close-sidebar-btn hamburger--elastic" data-class="closed-sidebar">
+                            <span class="hamburger-box">
+                                <span class="hamburger-inner"></span>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="app-header__mobile-menu">
+                <div>
+                    <button type="button" class="hamburger hamburger--elastic mobile-toggle-nav">
+                        <span class="hamburger-box">
+                            <span class="hamburger-inner"></span>
+                        </span>
+                    </button>
+                </div>
+            </div>
+            <div class="app-header__menu">
+                <span>
+                    <button type="button" class="btn-icon btn-icon-only btn btn-primary btn-sm mobile-toggle-header-nav">
+                        <span class="btn-icon-wrapper">
+                            <i class="fa fa-ellipsis-v fa-w-6"></i>
+                        </span>
+                    </button>
+                </span>
+            </div>    
+            <div class="app-header__content">
+                
+                <div class="app-header-right">
+
+                    <div class="header-btn-lg pr-0">
+                        <div class="widget-content p-0">
+                            <div class="widget-content-wrapper">
+                                <div class="widget-content-left">
+                                    <div class="btn-group">
+                                        <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="p-0 btn">
+                                            <img width="42" class="rounded-circle" src="https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_1280.png" alt="">
+                                            <i class="fa fa-angle-down ml-2 opacity-8"></i>
+                                        </a>
+                                        <div tabindex="-1" role="menu" aria-hidden="true" class="dropdown-menu dropdown-menu-right">
+                                            
+                                            <div tabindex="-1" class="dropdown-divider"></div>
+                                            <button type="button" tabindex="0" class="dropdown-item"><a href="logout">Logout</a></button>
+                                        </div>
+                                    </div>
+                                </div>
+                               
+                                
+                            </div>
+                        </div>
+                    </div>        </div>
+            </div>
+        </div>    
+       
+        
+        <div class="app-main">
+                <div class="app-sidebar sidebar-shadow">
+                    <div class="app-header__logo">
+                        <div  class="brand_name">WorkerHub</div>
+                        <div class="header__pane ml-auto">
+                            <div>
+                                <button type="button" class="hamburger close-sidebar-btn hamburger--elastic" data-class="closed-sidebar">
+                                    <span class="hamburger-box">
+                                        <span class="hamburger-inner"></span>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="app-header__mobile-menu">
+                        <div>
+                            <button type="button" class="hamburger hamburger--elastic mobile-toggle-nav">
+                                <span class="hamburger-box">
+                                    <span class="hamburger-inner"></span>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="app-header__menu">
+                        <span>
+                            <button type="button" class="btn-icon btn-icon-only btn btn-primary btn-sm mobile-toggle-header-nav">
+                                <span class="btn-icon-wrapper">
+                                    <i class="fa fa-ellipsis-v fa-w-6"></i>
+                                </span>
+                            </button>
+                        </span>
+                    </div>    
+                    <div class="scrollbar-sidebar">
+                        <div class="app-sidebar__inner">
+                            <ul class="vertical-nav-menu">
+                                <li class="app-sidebar__heading"></li>
+                                <li>
+                                    <a href="companyDashboard" class="mm-active">
+                                        <i class='metismenu-icon fa fa-home '></i>
+                                       Dashboard
+                                    </a>
+                                </li>
+                                </li>
+                                
+                              <li>
+                                <a href="manageproject">
+                                    <i class='metismenu-icon far fa-edit'></i>
+                                    </i>Update Menu
+                                </a>
+                                
+
+
+                            </li>
+                                <li>
+                                    <a href="manageproject">
+                                        <i class='metismenu-icon far fa-edit'></i>
+                                        </i>Generate Bill
+                                    </a>
+                                    
+
+
+                                </li>
+                               
+                                
+                                
+                            </ul>
+                        </div>
+                    </div>
+                </div> 
+                <!--#############    starting of dashboard container-->  
+
+
+                <div class="app-main__outer">
+
+                    <div class = "Initial">
+                        <div class = row>
+                            <div class="col-sm-4">
+                                <select id="day" name="day" class="form-control" >
+                                    <option value="">Select the Day</option>
+                                    <option value="Monday">Monday</option>
+                                    <option value="Tuesday">Tuesday</option>
+                                    <option value="Wednesday">Wednesday</option>
+                                    <option value="Thursday">Thursday</option>
+                                    <option value="Friday">Friday</option>
+                                </select>
+                            </div>
+
+                            <div class="col-sm-4">
+                                <select id="meal_type" name="meal_type" class="form-control" >
+                                    <option value="">Select the meal</option>
+                                    <option value="Breakfast">Breakfast</option>
+                                    <option value="Lunch">Lunch</option>
+                                    <option value="Lunch">Snacks</option>
+                                    <option value="Dinner">Dinner</option>
+                                </select>
+                            </div>
+
+
+                        </div>
+                    </div>
+                                
+                            
+                   
+                        <div class = "container-fluid ml-3 mt-5">
+                            
+                            <h1 >Hi there : ) {{user_id}}</h1><br>
+                            <h1 id = "roll_no">{{user_id}}</h1>
+                            
+                            <div class="row ml-3">
+                                <div class="row">
+                            <div class="col-sm-4">Food Item</div>
+                            <div class="col-sm-4">Qauntity</div>
+                            
+                            <button id="getDetails" type="button"  onclick="getDetails()" class="btn btn-info mt-4">Get Details</button><br>
+                        </div>
+                       
+                            <div class="row" id="inputFormRow">
+
+                                {% comment %} <div class="col-sm-4">
+                                                <select id="typeOfItem" name="typeOfLabour" class="form-control" >
+                                                    <option value="">Type of Worker</option>
+                                                    <option value="Labour">Labour</option>
+                                                    <option value="Mistry">Mistry</option>
+                                                    <option value="Carpenter">Carpenter</option>
+                                                </select>
+                                </div> {% endcomment %}
+                                <div class="col-sm-4"><input type="number" class="form-control" name="noOfLabour" placeholder="Number of worker"></div>
+                                                                        
+                                            
+                                </div>
+                                        
+                                    
+                                <div id="newRow"></div>
+
+                                    
+                                    <button id="addRow" type="button" class="btn btn-info mt-4">Add Row</button><br>
+                                    <button class="col-md-12 btn btn-primary mt-4"  onclick="SubmitButton()" type="submit">Create a Project</button>
+                            </div>
+                            
+                            {% comment %} <div id="reader">HI </div> {% endcomment %}
+                            <input type="file" id="qr-input-file" accept="image/*">
+                            <!-- 
+                            Or add captured if you only want to enable smartphone camera, PC browsers will ignore it.
+                            -->
+                            <input type="file" id="qr-input-file" accept="image/*" capture>
+                            <script type = "text/javascript">
+                                Html5Qrcode.getCameras().then(devices => {
+                                /**
+                                * devices would be an array of objects of type:
+                                * { id: "id", label: "label" }
+                                */
+                                var cameraId
+                                if (devices && devices.length) {
+                                     cameraId = devices[0].id;
+                                    console.log("yesy")
+                                    console.log(cameraId)
+                                    const html5QrCode = new Html5Qrcode("reader");
+ 
+                                        html5QrCode.start(
+                                        cameraId,     // retreived in the previous step.
+                                        {
+                                            fps: 10,    // sets the framerate to 10 frame per second
+                                            qrbox: 250  // sets only 250 X 250 region of viewfinder to
+                                                        // scannable, rest shaded.
+                                        },
+                                        qrCodeMessage => {
+                                            // do something when code is read. For example:
+                                            console.log(`QR Code detected: ${qrCodeMessage}`);
+                                            html5QrCode.stop().then(ignore => {
+                                            // QR Code scanning is stopped.
+                                            console.log("QR Code scanning stopped.");
+
+                                            var roll_no = qrCodeMessage
+                                            //console.log(qrCodeMessage)
+
+
+
+                                            
+
+                                            
+                                            
+
+
+
+
+                                            
+
+
+                                            })
+                                        },
+                                        errorMessage => {
+                                            // parse error, ideally ignore it. For example:
+                                            //console.log(`QR Code no longer in front of camera.`);
+                                        })
+                                        .catch(err => {
+                                        // Start failed, handle it. For example,
+                                        console.log(`Unable to start scanning, error: ${err}`);
+                                        });
+                                            // .. use this to start scanning.
+                                        }
+                                        }).catch(err => {
+                                        // handle err
+                                        console.log("Some Error")
+                                        });
+
+                                
+                            </script>
+
+                            <script type ="text/javascript">
+                                function getDetails(){
+                                    var day = $('#day').find(':selected').text()
+                                    var meal_type = $('#meal_type').find(':selected').text()
+
+                                    console.log(day)
+                                    console.log(meal_type)
+
+                                    mess = 'Mess_1' 
+
+                                    foodItemData ={
+                                        'day' : day,
+                                        'meal_type' : meal_type,
+                                        'mess' : mess
+                                    }
+
+
+                                    var xhttp = new XMLHttpRequest();
+                                                xhttp.onreadystatechange =  function(){
+                                                    if(this.readyState == 4 && this.status == 200){
+                                                        var response = JSON.parse(this.responseText);
+
+                                                        if(response['status']=='success'){
+                                                            console.log("Success");
+                                                        }
+                                                        else{
+                                                            console.log("Failed");
+                                                        }
+                                                    }
+                                                };
+                                                
+
+                                                
+                                                xhttp.open("POST", "getFoodDetails", true);
+                                                xhttp.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+                                                xhttp.send(JSON.stringify(foodItemData));
+                                }
+                            </script>
+
+                             <script type = "text/javascript">
+
+                            $("#addRow").click(function () {
+                                var html = '';
+                                html += '<div class="row foodItems" id="inputFormRow"><div class="col-sm-4"><select id="foodItemtype" name="foodItemType" class="form-control" ><option value="">Food Item</option>';
+                                var food_items = ["Egg " , "Chicken"]
+                                var i =0;
+                                for(i=0 ;i<food_items.length;i++){
+                                    html+='<option value="'+food_items[i]+'">'+food_items[i]+'</option>';
+                                }
+                                html+="</select></div>";
+                                html += '<div class="col-sm-4"><input type="number" class="form-control" name="quantity" placeholder="Number of worker"></div>';
+
+                                html += '<i class="fas fa-minus-circle" id="removeRow"></i>';
+                                html += '</div>';
+
+                                $('#newRow').append(html);
+                            });
+
+
+
+
+                            // remove row
+                            $(document).on('click', '#removeRow', function () {
+                                $(this).closest('#inputFormRow').remove();
+                            });
+
+                               
+                            </script>
+
+
+                        </div>
+                        
+                        
+                    
+                    
+                        
+                        
+                            
+    
+                    </div>
+
+                </div>
+              </div>  
+    </div>
+</div>
+
+    <!-- <div id="loader"></div> -->
+
+      <!--  ######### Popbox for error message #############3-->
+      <div id="snackbar">Warning</div> 
+
+
+      
+<script type = "text/javascript">
+
+        function SubmitButton(){
+            console.log("Clicked ME:")
+            var items = []
+            var quantity= []
+            $(".foodItems").each(function() {
+                items.push($(this).find(":selected").text());
+            });
+
+            $("input[name='quantity']").each(function() {
+                quantity.push($(this).val());
+
+            });
+
+            console.log(items)
+            console.log(quantity)
+            console.log(roll_no)
+
+                                            var xhttp = new XMLHttpRequest();
+                                                xhttp.onreadystatechange =  function(){
+                                                    if(this.readyState == 4 && this.status == 200){
+                                                        var response = JSON.parse(this.responseText);
+
+                                                        if(response['status']=='success'){
+                                                            console.log("Success");
+                                                        }
+                                                        else{
+                                                            console.log("Failed");
+                                                        }
+                                                    }
+                                                };
+                                                
+                                                
+                                                req_data = {
+                                                    'roll_number' : roll_no,
+                                                    
+                                                    'Items' : items,
+                                                    'quantity' : quantity
+                                                }
+                                                console.log(req_data)
+                                                xhttp.open("POST", "updateStudentBill", true);
+                                                xhttp.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+                                                //xhttp.send(JSON.stringify(req_data));
+
+        }
+</script>
+
+
+      
+</body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.js"></script>
+                
+
+
+   
+
+</html>

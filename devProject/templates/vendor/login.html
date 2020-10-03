@@ -1,0 +1,88 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Welcome...</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'css/index.css'%}">
+	<link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
+	<script src="https://kit.fontawesome.com/a81368914c.js"></script>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+</head>
+<body>
+	<img class="wave" src="{% static 'img/wave.png' %}">
+	<div class="container">
+
+		<div class="img">
+			<img src="{% static 'img/bg.svg'%}">
+			<h3 class="head_line"></h3>
+		</div>
+		<div class="login-content">
+			<div id="form">
+
+				<img src="{% static 'img/wsdc_logo.png'%}">
+				<h2 class="title">Vender Login</h2>
+           		<div class="input-div one">
+           		   <div class="i">
+           		   		<i class="fas fa-user"></i>
+           		   </div>
+           		   <div class="div">
+         <!--  		   		<h5>Username</h5>  -->
+           		   		<input type="text" class="input" id='username' placeholder="username" name="username" required>
+           		   </div>
+           		</div>
+           		<div class="input-div pass">
+           		   <div class="i">
+           		    	<i class="fas fa-lock"></i>
+           		   </div>
+           		   <div class="div">
+           		    	<h5>Password</h5>
+           		    	<input type="password" class="input" id="password" placeholder="password" name="password" required>
+            	   </div>
+            	</div>
+            	<a class = "mid" href="/forgotPassword">Forgot Password?</a>
+				<!-- <input type="submit"  class="btn" value="Login"> -->
+				<button class="btn" onclick="SubmitButton()" >Login</button>
+				<div class="mid">
+					<h4>New Here <a href="/register" style="color:#00ff95; text-align : center">Sign Up</a> Just in few moments</h4>
+				</div>
+            </div>
+
+        </div>
+
+
+	</div>
+
+	<!--  ######### Popbox for error message #############3-->
+    <div id="snackbar">Warning</div>
+	<script type="text/javascript" src="{% static 'js/main.js'%}"></script>
+	<script>
+		function SubmitButton(){
+			var username = document.getElementById('username').value;
+			var password  = document.getElementById('password').value;
+			var data = {'username':username,'password':password}
+			var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+               var data= JSON.parse(this.responseText);
+			   if(data['status'] == 'success'){
+					window.location.replace(data['url']);
+			   }else{
+				   console.log(data['message']);
+			   var x = document.getElementById("snackbar");
+				x.innerHTML = data['message'];
+				x.style.backgroundColor = "red";
+				x.className = "show";
+				setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+
+			   }
+
+                }
+            };
+            xhttp.open("POST", "", true);
+            xhttp.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+            xhttp.send(JSON.stringify(data));
+		}
+	</script>
+</body>
+</html>
